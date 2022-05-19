@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+# Test use of width values other than 0 and 1.
+
+PATH=$(dirname "$(readlink -f "$0")")/..:$PATH
+export FRDIGITS=DMA
+for WIDTH in 2 3 4 5; do
+    echo "width $WIDTH:"
+    seq 0 999999 | fr $WIDTH | awk '{q=p;p=length($0);if(p!=q){print}}'
+done
+
+echo "double-digit width 11:"
+(cat <<.
+1234567890
+12345678901
+123456789012
+1234567890123
+.
+)| fr 11

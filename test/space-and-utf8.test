@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+PATH=$(dirname "$(readlink -f "$0")")/..:$PATH
+
+# Space, tab.
+printf " 2024\t25 5\n" | FRDIGITS=DMA fr 1 5
+
+# Non-ASCII (multibyte character) fails.
+printf "2024\u00b512\n200\n" | FRDIGITS=DMA fr 1 5
+
+# ASCII 7f (DEL) fails.
+printf "2024\u007f\n" | FRDIGITS=DMA fr 1 5

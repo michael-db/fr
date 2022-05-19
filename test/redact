@@ -1,0 +1,3 @@
+#!/usr/bin/sed -f
+# make the test output independent of the program version
+s/^\(Version:\).*/\1 <redacted>/

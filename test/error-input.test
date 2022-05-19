@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+
+# Error for alphanumeric characters that are not in the alphabet.
+PATH=$(dirname "$(readlink -f "$0")")/..:$PATH
+
+# DCA, value is in alphabet but is outside the range for the base.
+echo k | FRDIGITS=DCA fr 9 2 10
+echo z | FRDIGITS=DCA fr 9 2 10
+
+# DMA, value is in alphabet but is outside the range for the base.
+echo n | FRDIGITS=DMA fr 9 2 10
+echo a | FRDIGITS=DMA fr 9 2 10
+
+# digits specified, minimal alphabet
+for C in `seq 32 126`; do
+    printf "\x$(printf %x $C)\n" | FRDIGITS="4567" fr 1 2 2
+done
+
+# End with an alphanumeric character so the exit code is tested.
+echo z | FRDIGITS="4567" fr 1 2 2

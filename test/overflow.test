@@ -1,0 +1,31 @@
+#!/usr/bin/env bash
+
+PATH=$(dirname "$(readlink -f "$0")")/..:$PATH
+export FRDIGITS=DMA
+EIGHTY_DIGITS=12345678901234567890123456789012345678901234567890123456789012345678901234567890
+
+echo "No transformation, maximum number of digits"
+echo 1234567890${EIGHTY_DIGITS}1234567890 | fr 0
+
+>&2 echo "No transformation, max digits + 1"
+echo 1234567890${EIGHTY_DIGITS}12345678901 | fr 0
+
+>&2 echo "Max digits, attempted lengthening transformation."
+echo 1234567890${EIGHTY_DIGITS}123456789c | fr 0
+
+>&2 echo "Max digits, attempted lengthening transformation."
+echo 1234567890${EIGHTY_DIGITS}123456789c | fr 0
+
+# Attempt to shorten a number with the maximum number of digits
+# already incorporating a prefix of the same length.
+# This case could be handled successfully, leaving the number
+# unchanged, but it is too much of an edge case to be worth it.
+# The input is not a number that the program could ever have
+# generated, i.e., it could not arise in a roundtrip scenario.
+>&2 echo "Attempted shortening transformation that fails."
+echo j234567890${EIGHTY_DIGITS}1234567890 | fr 0
+
+# Leading 0s are included in the maximum allowed digits.
+>&2 echo "Max digits + 1 leading 0."
+echo 01234567890${EIGHTY_DIGITS}1234567890 | fr 0
+

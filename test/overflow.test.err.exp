@@ -1,0 +1,11 @@
+No transformation, max digits + 1
+fr: overflow: too many digits
+Max digits, attempted lengthening transformation.
+fr: overflow: too many digits
+Max digits, attempted lengthening transformation.
+fr: overflow: too many digits
+Attempted shortening transformation that fails.
+fr: overflow: too many digits
+Max digits + 1 leading 0.
+fr: overflow: too many digits
+exit 2

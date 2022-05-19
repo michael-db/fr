@@ -1,0 +1,63 @@
+#!/usr/bin/env bash
+# (c) 2022 Michael Breen (https://mbreen.com)
+usage() { >&2 cat <<.
+Usage:
+    $(basename $0) [PATH/]TEST
+Run PATH/TEST and check that stdout and stderr are as expected.
+If PATH/ is omitted, "./" is used.
+Stdout is compared to TEST.out.exp and stderr to TEST.err.exp
+in the directory PATH/.
+A .err.exp file ends with a line "exit <X>" where <X> is the
+expected exit code of test, but this is optional if the exit code
+is 0 and the file would otherwise be empty.
+If either .exp file would be empty then it need not exist.
+
+If an executable named "redact" exists in the directory PATH/
+then both stdout and stderr are filtered through it: this allows
+volatile content such as timestamps to be scrubbed or changed so
+that the expected output is constant.
+.
+}
+if [ "$#" -ne 1 ]; then usage; exit 1; fi
+
+prog=$1
+if [ $(basename "$prog") = "$prog" ]; then
+    prog="./$prog"
+fi
+
+redact=$(echo $prog|sed 's@/[^/]*$@/redact@')
+[ -x "$redact" ] || redact=cat
+
+# bash does not support waiting on process substitution subshells,
+# so this is a workaround (credit cuonglm).
+fifo=$(mktemp -u)
+mkfifo $fifo || { >&2 echo "failed to create fifo"; exit 1; }
+trap '/bin/rm $fifo' EXIT
+$prog 2> >($redact >$prog.err; : >$fifo) \
+        > >($redact >$prog.out; : >$fifo)
+exco=$?
+read <$fifo; read <$fifo
+
+if [ $exco -ne 0 ] || [ -s $prog.err ] || [ -s $prog.err.exp ]; then
+    echo exit $exco >>$prog.err
+fi
+fail=0
+for out in $prog.err $prog.out; do
+    exp=$out.exp
+    if [ -s $out ]; then
+        ! [ -e $exp ] && touch $exp
+    elif ! [ -s $exp ]; then
+        rm $out
+        continue
+    fi
+    if ! cmp -s $out $exp; then
+        >&2 echo ": FAILED $prog;  diff $out $exp"
+        fail=1
+    else
+        rm $out
+    fi
+done
+if [ $fail -eq 0 ]; then
+    >&2 echo ": passed $prog;"
+fi
+exit $fail

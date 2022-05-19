@@ -1,0 +1,38 @@
+#!/usr/bin/env bash
+
+# Test application of fr recursively.
+# FR(x,FR(y,z)) can be realized by FR(y,z) followed by FR(x,y*z)
+# but does not work very well. In particular, the first FR(y,z)
+# may produce a number with a leading 0, in which case FR(x,y*z)
+# cannot shorten it further because in a prefix any leading 0
+# would be invisible.
+# However, recursive application roundtripping should still work.
+# This requires that (1) leading 0s are respected in the input,
+# and (2), leading 0s are not added to the output to pad to the
+# desired width. The latter is verified by using "fr 9" instead
+# instead of "fr 0" at the reversal stage.
+
+PATH=$(dirname "$(readlink -f "$0")")/..:$PATH
+export FRDIGITS=DMA
+
+prefix=$(basename $0)
+SEQ=$(mktemp --tmpdir $prefix.seq.XXX)
+FR2=$(mktemp --tmpdir $prefix.fr2.XXX)
+FR3_2=$(mktemp --tmpdir $prefix.fr3_2.XXX)
+OUT=$(mktemp --tmpdir $prefix.out.XXX)
+
+seq 0 999999 > $SEQ
+<$SEQ fr 1 2 10 > $FR2
+<$FR2 fr 1 3 20 > $FR3_2
+<$FR3_2 fr 9 3 20 | fr 9 2 10 > $OUT
+
+echo "Repeated application of FR() does not work very well, as can"
+echo "be seen from the irregular lengths for increasing numbers:"
+<$FR3_2 awk '{q=p;p=length($0);if(p!=q){print}}'
+
+if ! cmp $SEQ $OUT; then
+    >&2 echo ": 1; diff $SEQ $OUT"
+    exit 1
+fi
+
+rm $SEQ $FR2 $FR3_2 $OUT

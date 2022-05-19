@@ -1,0 +1,3 @@
+fr: input character outside ASCII range
+fr: input character outside ASCII range
+exit 1

@@ -1,0 +1,39 @@
+#!/usr/bin/env bash
+
+# Test roundtripping and default values for arguments P, S.
+
+PATH=$(dirname "$(readlink -f "$0")")/..:$PATH
+export FRDIGITS=DMA
+
+prefix=$(basename $0)
+SEQ=$(mktemp --tmpdir $prefix.seq.XXX)
+FR2=$(mktemp --tmpdir $prefix.fr2.XXX)
+OUT=$(mktemp --tmpdir $prefix.out.XXX)
+
+seq 0 999999 > $SEQ
+<$SEQ fr 1 > $FR2
+<$FR2 fr 0 > $OUT
+if ! cmp $SEQ $OUT; then
+    >&2 echo ": 1; diff $SEQ $OUT"
+    exit 1
+fi
+
+# 2 is the default prefix base (P), 10 is the default stem base (S)
+for ARGS in "2" "2 10"; do
+    <$SEQ fr 1 $ARGS > $OUT
+    if ! cmp -s $FR2 $OUT; then
+        >&2 echo ": ARGS=$ARGS; diff $FR2 $OUT"
+        exit 1
+    fi
+done
+# Also test non-zero width that should have the same result
+# (as 9 is wider than any of the numbers in decimal).
+for ARGS in "0 2" "0 2 10" "9"; do
+    <$FR2 fr $ARGS > $OUT
+    if ! cmp -s $SEQ $OUT; then
+        >&2 echo ": ARGS=$ARGS; diff $SEQ $OUT"
+        exit 1
+    fi
+done
+
+rm $SEQ $FR2 $OUT

@@ -1,0 +1,186 @@
+alphabet contains repeated 'h'
+fr: digit repeated in alphabet
+Alphabet: 0123456789abcdefghhj
+
+Usage: fr n [P [S]]
+Convert numbers to or from factored radix form (see
+https://mbreen.com/fr).
+  n      Desired number of digits, 0..99.
+         0: maximum: output numbers in base S.
+         1: minimum: output canonical FR(P,S).
+  P      Prefix radix. Default: 2.
+  S      Stem radix. Default: 10.
+
+The environment variable FRDIGITS must be set to one of:
+  DMA    Decimal Morphology Alphabet
+  DCA    Decade-Congruent Alphabet
+  or an explicit alphabet (printable ASCII), e.g.,
+  0123456789ABCDEFGHIJ
+
+Examples (POSIX shell):
+  export FRDIGITS=DMA
+  # FR(5,10) datestamp:
+  echo 2021-12-25 | fr 1 5
+  # sort FR(2,10) by intermediate conversion to decimal:
+  printf '0z1\n99q\n' | fr 0 | sort -n | fr 1
+  # Display the alphabet (ensure FRDIGITS is set):
+  2>&1 fr 0 99 |sed -n 's/^Alphabet: //p' |fold -w10
+
+Notes:
+  * Insignificant leading zeros should be stripped from
+  decimal (or base S) numbers passed to the program.
+  * Punctuation characters not present in the alphabet
+  are treated as separators between numbers.
+  * Thus only whole numbers are supported. Fractional
+  numbers should be scaled to remove the '.' or ','.
+
+Version: <redacted>
+alphabet character not printable ASCII (0x31 unit separator)
+fr: alphabet must be printable ASCII
+Alphabet: 0123456789abcdefghi
+
+Usage: fr n [P [S]]
+Convert numbers to or from factored radix form (see
+https://mbreen.com/fr).
+  n      Desired number of digits, 0..99.
+         0: maximum: output numbers in base S.
+         1: minimum: output canonical FR(P,S).
+  P      Prefix radix. Default: 2.
+  S      Stem radix. Default: 10.
+
+The environment variable FRDIGITS must be set to one of:
+  DMA    Decimal Morphology Alphabet
+  DCA    Decade-Congruent Alphabet
+  or an explicit alphabet (printable ASCII), e.g.,
+  0123456789ABCDEFGHIJ
+
+Examples (POSIX shell):
+  export FRDIGITS=DMA
+  # FR(5,10) datestamp:
+  echo 2021-12-25 | fr 1 5
+  # sort FR(2,10) by intermediate conversion to decimal:
+  printf '0z1\n99q\n' | fr 0 | sort -n | fr 1
+  # Display the alphabet (ensure FRDIGITS is set):
+  2>&1 fr 0 99 |sed -n 's/^Alphabet: //p' |fold -w10
+
+Notes:
+  * Insignificant leading zeros should be stripped from
+  decimal (or base S) numbers passed to the program.
+  * Punctuation characters not present in the alphabet
+  are treated as separators between numbers.
+  * Thus only whole numbers are supported. Fractional
+  numbers should be scaled to remove the '.' or ','.
+
+Version: <redacted>
+alphabet character not printable ASCII (DEL)
+fr: alphabet must be printable ASCII
+Alphabet: 0123456789bcdefghij
+
+Usage: fr n [P [S]]
+Convert numbers to or from factored radix form (see
+https://mbreen.com/fr).
+  n      Desired number of digits, 0..99.
+         0: maximum: output numbers in base S.
+         1: minimum: output canonical FR(P,S).
+  P      Prefix radix. Default: 2.
+  S      Stem radix. Default: 10.
+
+The environment variable FRDIGITS must be set to one of:
+  DMA    Decimal Morphology Alphabet
+  DCA    Decade-Congruent Alphabet
+  or an explicit alphabet (printable ASCII), e.g.,
+  0123456789ABCDEFGHIJ
+
+Examples (POSIX shell):
+  export FRDIGITS=DMA
+  # FR(5,10) datestamp:
+  echo 2021-12-25 | fr 1 5
+  # sort FR(2,10) by intermediate conversion to decimal:
+  printf '0z1\n99q\n' | fr 0 | sort -n | fr 1
+  # Display the alphabet (ensure FRDIGITS is set):
+  2>&1 fr 0 99 |sed -n 's/^Alphabet: //p' |fold -w10
+
+Notes:
+  * Insignificant leading zeros should be stripped from
+  decimal (or base S) numbers passed to the program.
+  * Punctuation characters not present in the alphabet
+  are treated as separators between numbers.
+  * Thus only whole numbers are supported. Fractional
+  numbers should be scaled to remove the '.' or ','.
+
+Version: <redacted>
+alphabet character not printable ASCII (multibyte)
+fr: alphabet must be printable ASCII
+Alphabet: 0123456789abcdefghijµ
+
+Usage: fr n [P [S]]
+Convert numbers to or from factored radix form (see
+https://mbreen.com/fr).
+  n      Desired number of digits, 0..99.
+         0: maximum: output numbers in base S.
+         1: minimum: output canonical FR(P,S).
+  P      Prefix radix. Default: 2.
+  S      Stem radix. Default: 10.
+
+The environment variable FRDIGITS must be set to one of:
+  DMA    Decimal Morphology Alphabet
+  DCA    Decade-Congruent Alphabet
+  or an explicit alphabet (printable ASCII), e.g.,
+  0123456789ABCDEFGHIJ
+
+Examples (POSIX shell):
+  export FRDIGITS=DMA
+  # FR(5,10) datestamp:
+  echo 2021-12-25 | fr 1 5
+  # sort FR(2,10) by intermediate conversion to decimal:
+  printf '0z1\n99q\n' | fr 0 | sort -n | fr 1
+  # Display the alphabet (ensure FRDIGITS is set):
+  2>&1 fr 0 99 |sed -n 's/^Alphabet: //p' |fold -w10
+
+Notes:
+  * Insignificant leading zeros should be stripped from
+  decimal (or base S) numbers passed to the program.
+  * Punctuation characters not present in the alphabet
+  are treated as separators between numbers.
+  * Thus only whole numbers are supported. Fractional
+  numbers should be scaled to remove the '.' or ','.
+
+Version: <redacted>
+alphabet one character too short
+fr: alphabet must have at least P*S characters
+Alphabet: 0123456789abcdefghi
+
+Usage: fr n [P [S]]
+Convert numbers to or from factored radix form (see
+https://mbreen.com/fr).
+  n      Desired number of digits, 0..99.
+         0: maximum: output numbers in base S.
+         1: minimum: output canonical FR(P,S).
+  P      Prefix radix. Default: 2.
+  S      Stem radix. Default: 10.
+
+The environment variable FRDIGITS must be set to one of:
+  DMA    Decimal Morphology Alphabet
+  DCA    Decade-Congruent Alphabet
+  or an explicit alphabet (printable ASCII), e.g.,
+  0123456789ABCDEFGHIJ
+
+Examples (POSIX shell):
+  export FRDIGITS=DMA
+  # FR(5,10) datestamp:
+  echo 2021-12-25 | fr 1 5
+  # sort FR(2,10) by intermediate conversion to decimal:
+  printf '0z1\n99q\n' | fr 0 | sort -n | fr 1
+  # Display the alphabet (ensure FRDIGITS is set):
+  2>&1 fr 0 99 |sed -n 's/^Alphabet: //p' |fold -w10
+
+Notes:
+  * Insignificant leading zeros should be stripped from
+  decimal (or base S) numbers passed to the program.
+  * Punctuation characters not present in the alphabet
+  are treated as separators between numbers.
+  * Thus only whole numbers are supported. Fractional
+  numbers should be scaled to remove the '.' or ','.
+
+Version: <redacted>
+exit 1

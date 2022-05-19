@@ -1,0 +1,45 @@
+#!/usr/bin/env bash
+# Test use of DMA, DSA, and custom alphabets - full alphabet (P=6, S=10).
+
+PATH=$(dirname "$(readlink -f "$0")")/..:$PATH
+
+SEQ=$(mktemp --tmpdir $prefix.seq.XXX)
+FR6=$(mktemp --tmpdir $prefix.fr6.XXX)
+OUT=$(mktemp --tmpdir $prefix.out.XXX)
+
+seq 0 999999 > $SEQ
+
+#      0         1        2          3         4         5
+CUSTOM=0123456789ZYXWVTSRQPONMLKJIHGFEDCBAzyxwvtsrqponmlkjihgfedcba
+
+for ALPHABET in DMA DCA $CUSTOM; do
+    export FRDIGITS=$ALPHABET
+    <$SEQ fr 1 6 > $FR6
+    echo "first 64 values FR(6,10) $ALPHABET"
+    head -n64 $FR6
+    echo "---"
+    echo "first (smallest) value at every length FR(6,10) $ALPHABET"
+    <$FR6 awk '{q=p;p=length($0);if(p!=q){print}}'
+    echo "---"
+    # roundtrip
+    <$FR6 fr 0 6 > $OUT
+    if ! cmp $SEQ $OUT; then
+        >&2 echo ": $ALPHABET; diff $SEQ $OUT"
+        exit 1
+    fi
+done
+rm $SEQ $FR2 $OUT
+
+echo "FR(19,5) - use of maximum 95-character alphabet"
+echo "For the following, note that the S largest n-digit numbers in"
+echo "canonical FR(P,S) have the same n-digit representation in"
+echo "base P*S using the same alphabet, hence the simplified"
+echo "conversion to decimal."
+export FRDIGITS='0123456789 !"#$%&'"'"'()*+,-./:;<=>?@[\]^_`{|}~ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'
+echo "z = 94 = 3*25 +3*5 +4"
+echo z | fr 0 19 5
+echo z | fr 0 19 5 | fr 1 19 5
+echo "zzz = 94*95**2 +94*95 +94"
+echo " = 2*5**8 +0 +4*5**6 +4*5**5 +1*625 +3*125 +4*25 +4*5 +4"
+echo zzz | fr 0 19 5
+echo zzz | fr 0 19 5 | fr 1 19 5

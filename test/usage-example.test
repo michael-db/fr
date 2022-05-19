@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+# Verify the example used in the Usage message.
+
+export PATH=$(dirname "$(readlink -f "$0")")/..:$PATH
+
+2>&1 fr|sed -n '/Examples/,/^$/p'|sed 1d|bash

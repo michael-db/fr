@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+PATH=$(dirname "$(readlink -f "$0")")/..:$PATH
+export FRDIGITS=DMA
+
+>&2 echo "=== No arguments:"
+fr
+>&2 echo "=== Too many arguments:"
+fr 1 2 3 4
+>&2 echo "=== Radix out of range (1):"
+fr 1 1
+>&2 echo "=== Radix out of range (2):"
+fr 1 5 1
+>&2 echo "=== Radix out of range (3):"
+fr 1 100 10
+>&2 echo "=== Width out of range (1):"
+fr 100
+>&2 echo "=== Negative width:"
+fr -1
+>&2 echo "=== Non-decimal width:"
+fr a
+>&2 echo "=== Non-decimal radix:"
+fr 1 A
