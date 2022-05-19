@@ -48,8 +48,8 @@ For a comprehensive account, see <https://mbreen.com/fr>
 The filter is written in C (C99) to keep things easy.
 On a typical installation of Linux this should work:
 ```
-sudo make install           # create /usr/bin/fr
-fr                          # get a usage message
+make                        # create ./fr
+./fr                        # get a usage message
 ```
 
 To see the full sequence of 2-digit FR(2,10) numbers mentioned above
