@@ -6,7 +6,7 @@ test: fr
 fr: fr.c
 	@VERSION="$$(./get-version.sh)"; \
 	echo "Making $@, version=\"$${VERSION}\""; \
-	sed 's@// VERSION@"\\nVersion: '"$${VERSION}"'\\n"@' $^ | \
+	sed 's|// VERSION|"\\nVersion: '"$${VERSION}"'\\n"|' $^ | \
 	cc -o $@ -x c - -Wall -Wextra -std=c99 -pedantic \
 	-Wmissing-prototypes -Wstrict-prototypes -O2 -Wconversion
 
