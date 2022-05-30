@@ -28,7 +28,7 @@ for ALPHABET in DMA DCA $CUSTOM; do
         exit 1
     fi
 done
-rm $SEQ $FR2 $OUT
+rm $SEQ $FR6 $OUT
 
 echo "FR(19,5) - use of maximum 95-character alphabet"
 echo "For the following, note that the S largest n-digit numbers in"
