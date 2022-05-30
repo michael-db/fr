@@ -1,6 +1,6 @@
 .PHONY: test
 test: fr
-	@export DIGITS=	# clean default test environment
+	@export FRDIGITS=	# clean default test environment
 	@ls test/*.test|xargs -n 1 test/run-test
 
 fr: fr.c
