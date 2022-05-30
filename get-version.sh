@@ -12,6 +12,7 @@ TAG=$( (git describe --tags --match='v[0-9]*' --dirty 2>/dev/null \
 SOURCE=$( (2>/dev/null git ls-remote --tags origin "$TAG" \
     || >&2 echo "$0: Failed to check origin repo," \
     "using working dir as version source.") |
-    grep -q . && git ls-remote --get-url origin || pwd)
+    grep -q . && (git ls-remote --get-url origin |
+    sed -E 's,^git@([^:]*):/*(.*)$,https://\1/\2,') || pwd)
 
 echo "$SOURCE $TAG"
